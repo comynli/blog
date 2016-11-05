@@ -10,12 +10,16 @@ from blog.models import db
 from blog.handlers.user import router as user
 from blog.authentication import JWTAuthenticationProvider
 from blog.handlers.post import router as post
+from blog.handlers.comment import router as comment
+from blog.handlers.catalog import router as catalog
 
 app = Application()
 app.register_extension(db)
 app.add_filter(AuthenticationFilter(JWTAuthenticationProvider))
 app.add_router(user)
 app.add_router(post)
+app.add_router(comment)
+app.add_router(catalog)
 
 
 if __name__ == '__main__':

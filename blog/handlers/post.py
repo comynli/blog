@@ -5,7 +5,7 @@ from m import Router
 from m.security import Require
 from m.utils import jsonify
 from webob import exc
-from ..models import db, Post, PostContent, Catalog
+from ..models import db, Post, PostContent, Catalog, Like, Favorite
 
 
 router = Router('/post')
@@ -149,3 +149,21 @@ def delete(ctx, request):
         db.session.rollback()
         raise exc.HTTPInternalServerError(e)
     return jsonify(code=200, post=post.dictify(exclude={'author.password', 'author.catalogs'}))
+
+
+@router.put('/{id:int}')
+@Require()
+def like(ctx, request):
+    post = Post.query.filter(Post.id == request.args['id']).first_or_404()
+    user = request.principal
+    _like = Like.query.filter(Like.post_id == post.id).filter(Like.user_id == user.id).first()
+    if _like is None:
+        _like = Like(post_id=post, user_id=user)
+    db.session.add(_like)
+    try:
+        db.session.commit()
+    except Exception as e:
+        logging.error(e)
+        db.session.rollback()
+        raise exc.HTTPInternalServerError(e)
+    return jsonify(code=200)

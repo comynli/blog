@@ -8,7 +8,7 @@ from webob import exc
 from ..models import db, Post, PostContent, Catalog, Like, Favorite
 
 
-router = Router('/post')
+router = Router('/api/post')
 
 img_re = re.compile(r'''!\[(.*)\]\((.*)\)''')
 

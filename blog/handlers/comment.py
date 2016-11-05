@@ -7,7 +7,7 @@ from webob import exc
 from ..models import db, Comment, Post
 
 
-router = Router('/comment')
+router = Router('/api/comment')
 
 
 @router.post('')

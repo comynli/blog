@@ -9,7 +9,7 @@ from sqlalchemy import or_
 from m.utils import jsonify
 
 
-router = Router(prefix='/user')
+router = Router(prefix='/api/user')
 
 
 @router.post('/register')

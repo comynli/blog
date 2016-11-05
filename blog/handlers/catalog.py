@@ -6,7 +6,7 @@ from webob import exc
 from ..models import db, Catalog, Post
 
 
-router = Router('/catalog')
+router = Router('/api/catalog')
 
 
 @router.post('')

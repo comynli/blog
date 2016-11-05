@@ -21,7 +21,7 @@ class JWTAuthenticationProvider(AuthenticationProvider):
             user_id = decoded.get('user')
             if user_id is None:
                 raise HTTPUnauthorized()
-            user = User.query.filter("id", user_id).first()
+            user = User.query.filter(User.id == user_id).first()
             if user is None:
                 raise HTTPUnauthorized()
             return user

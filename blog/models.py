@@ -24,7 +24,7 @@ class Catalog(db.Model):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    name = Column(Integer, nullable=False)
+    name = Column(String(45), nullable=False)
 
 
 class Post(db.Model):

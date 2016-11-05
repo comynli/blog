@@ -31,7 +31,7 @@ class Post(db.Model):
     __tablename__ = 'post'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    title = Column(String(192), nullable=False)
+    title = Column(String(192), nullable=False, default='new post')
     author_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     catalog_id = Column(Integer, ForeignKey('catalog.id'), nullable=False)
     timestamp = Column(DateTime, nullable=False)
@@ -40,7 +40,7 @@ class Post(db.Model):
 
     author = relationship('User', foreign_keys=[author_id])
     catalog = relationship('Catalog', foreign_keys=[catalog_id])
-    content = relationship('PostContent', foreign_keys='[PostContent.id]')
+    content = relationship('PostContent', foreign_keys='[PostContent.id]', uselist=False)
 
 
 class PostContent(db.Model):

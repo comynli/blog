@@ -1,3 +1,4 @@
+import re
 import datetime
 import logging
 from m import Router
@@ -8,6 +9,8 @@ from ..models import db, Post, PostContent, Catalog
 
 
 router = Router('/post')
+
+img_re = re.compile(r'''!\[(.*)\]\((.*)\)''')
 
 
 def update_post(request, status=0):
@@ -31,6 +34,11 @@ def update_post(request, status=0):
         if catalog is not None:
             post.catalog = catalog
     if content is not None:
+        for line in content.splitlines():
+            m = img_re.search(line)
+            if m:
+                first_image = m.group(1)
+                post.image = first_image
         post_content = PostContent.query.filter(PostContent.id == post.id).first()
         if post_content is None:
             post_content = PostContent(content=content)

@@ -37,6 +37,7 @@ class Post(db.Model):
     timestamp = Column(DateTime, nullable=False)
     status = Column(Integer, nullable=False, default=0)
     read_count = Column(Integer, nullable=False, default=0)
+    image = Column(String, nullable=True)
 
     author = relationship('User', foreign_keys=[author_id])
     catalog = relationship('Catalog', foreign_keys=[catalog_id])

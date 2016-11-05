@@ -12,7 +12,7 @@ from m.utils import jsonify
 router = Router(prefix='/user')
 
 
-@router.route('/register', methods=['POST'])
+@router.post('/register')
 def register(ctx, request):
     try:
         payload = request.json()
@@ -40,7 +40,7 @@ def register(ctx, request):
         raise HTTPInternalServerError(e)
 
 
-@router.route('/login', methods=['POST'])
+@router.post('/login')
 def login(ctx, request):
     try:
         payload = request.json()
@@ -49,11 +49,9 @@ def login(ctx, request):
     except Exception as e:
         raise HTTPBadRequest(e)
     user = User.query.filter(User.mail == mail).first_or_404('user {} not exist'.format(mail))
-    print(bcrypt.hashpw(password.encode(), user.password.encode()))
-    print(user.password.encode())
     if bcrypt.hashpw(password.encode(), user.password.encode()) == user.password.encode():
-        key = ctx.config.get_string('auth.key')
-        exp = datetime.datetime.utcnow() + datetime.timedelta(hours=ctx.config.get_int('auth.exp'))
+        key = ctx.config.get_string('authorization.key')
+        exp = datetime.datetime.utcnow() + datetime.timedelta(hours=ctx.config.get_int('authorization.exp'))
         token = jwt.encode({'user': user.id, 'exp': exp}, key, 'HS512').decode()
         return jsonify(code=200, token=token)
     raise HTTPUnauthorized()

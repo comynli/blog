@@ -15,7 +15,7 @@ class JWTAuthenticationProvider(AuthenticationProvider):
     @property
     def principal(self):
         if self.token is None:
-            raise HTTPUnauthorized
+            raise HTTPUnauthorized()
         try:
             decoded = jwt.decode(self.token.encode(), self.key, ['HS512'])
             user_id = decoded.get('user')

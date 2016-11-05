@@ -37,8 +37,9 @@ def update_post(request, status=0):
         for line in content.splitlines():
             m = img_re.search(line)
             if m:
-                first_image = m.group(1)
+                first_image = m.group(2)
                 post.image = first_image
+                break
         post_content = PostContent.query.filter(PostContent.id == post.id).first()
         if post_content is None:
             post_content = PostContent(content=content)
